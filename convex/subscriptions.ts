@@ -197,7 +197,7 @@ export const checkUserSubscriptionStatus = query({
     const subscription = await ctx.db
       .query("subscriptions")
       .withIndex("userId", (q) => q.eq("userId", user.tokenIdentifier))
-      .order("desc")  // Order by createdAt in descending order
+      .filter((q) => q.eq(q.field("status"), "active"))
       .first();
 
     const hasActiveSubscription = subscription?.status === "active";
