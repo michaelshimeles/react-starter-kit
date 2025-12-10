@@ -35,12 +35,19 @@ const data = {
   ],
 };
 
+interface User {
+  firstName: string | null;
+  lastName: string | null;
+  emailAddresses: Array<{ emailAddress: string }>;
+  imageUrl: string;
+}
+
 export function AppSidebar({
   variant,
   user,
 }: {
   variant: "sidebar" | "floating" | "inset";
-  user: any;
+  user: User;
 }) {
   return (
     <Sidebar collapsible="offcanvas" variant={variant}>
