@@ -23,13 +23,22 @@ import {
 } from "~/components/ui/sidebar";
 import { useClerk } from "@clerk/react-router";
 
-export function NavUser({ user }: any) {
+interface NavUserProps {
+  user: {
+    firstName: string | null;
+    lastName: string | null;
+    emailAddresses: Array<{ emailAddress: string }>;
+    imageUrl: string;
+  };
+}
+
+export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
-  const userFullName = user.firstName + " " + user.lastName;
-  const userEmail = user.emailAddresses[0].emailAddress;
+  const userFullName = `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || "User";
+  const userEmail = user.emailAddresses[0]?.emailAddress ?? "";
   const userInitials =
-    (user?.firstName?.charAt(0) || "").toUpperCase() +
-    (user?.lastName?.charAt(0) || "").toUpperCase();
+    (user.firstName?.charAt(0) ?? "").toUpperCase() +
+    (user.lastName?.charAt(0) ?? "").toUpperCase() || "U";
   const userProfile = user.imageUrl;
   const { signOut } = useClerk();
 
