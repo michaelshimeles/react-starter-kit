@@ -51,7 +51,6 @@ const createCheckout = async ({
     customerEmail: customerEmail,
     metadata: {
       ...metadata,
-      priceId: productPriceId,
     },
   };
 
@@ -185,7 +184,7 @@ export const checkUserSubscriptionStatus = query({
       }
       tokenIdentifier = identity.subject;
     }
-
+    
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", tokenIdentifier))
@@ -194,10 +193,11 @@ export const checkUserSubscriptionStatus = query({
     if (!user) {
       return { hasActiveSubscription: false };
     }
-
+    
     const subscription = await ctx.db
       .query("subscriptions")
       .withIndex("userId", (q) => q.eq("userId", user.tokenIdentifier))
+      .filter((q) => q.eq(q.field("status"), "active"))
       .first();
 
     const hasActiveSubscription = subscription?.status === "active";
@@ -234,6 +234,7 @@ export const checkUserSubscriptionStatusByClerkId = query({
     const subscription = await ctx.db
       .query("subscriptions")
       .withIndex("userId", (q) => q.eq("userId", user.tokenIdentifier))
+      .order("desc")  // Order by createdAt in descending order
       .first();
 
     const hasActiveSubscription = subscription?.status === "active";
@@ -261,6 +262,7 @@ export const fetchUserSubscription = query({
     const subscription = await ctx.db
       .query("subscriptions")
       .withIndex("userId", (q) => q.eq("userId", user.tokenIdentifier))
+      .order("desc")  // Order by createdAt in descending order
       .first();
 
     return subscription;
@@ -328,6 +330,7 @@ export const handleWebhookEvent = mutation({
 
         if (existingSub) {
           await ctx.db.patch(existingSub._id, {
+            polarPriceId: args.body.data.price_id,
             amount: args.body.data.amount,
             status: args.body.data.status,
             currentPeriodStart: new Date(

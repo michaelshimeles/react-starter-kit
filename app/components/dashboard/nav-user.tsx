@@ -5,6 +5,7 @@ import {
   IconUserCircle,
 } from "@tabler/icons-react";
 import { SettingsIcon } from "lucide-react";
+import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -94,9 +95,12 @@ export function NavUser({ user }: NavUserProps) {
                 <IconUserCircle />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <SettingsIcon />
-                Settings
+              <DropdownMenuItem asChild>
+                <Link to="/dashboard/settings">
+                
+                  <SettingsIcon />
+                  Settings
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

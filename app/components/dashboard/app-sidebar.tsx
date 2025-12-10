@@ -26,13 +26,7 @@ const data = {
       icon: MessageCircle,
     },
   ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: IconSettings,
-    },
-  ],
+  navSecondary: [],
 };
 
 interface User {
