@@ -5,6 +5,7 @@ import {
   IconUserCircle,
 } from "@tabler/icons-react";
 import { SettingsIcon } from "lucide-react";
+import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -40,7 +41,7 @@ export function NavUser({ user }: NavUserProps) {
     (user.firstName?.charAt(0) ?? "").toUpperCase() +
     (user.lastName?.charAt(0) ?? "").toUpperCase() || "U";
   const userProfile = user.imageUrl;
-  const { signOut } = useClerk();
+  const { signOut, openUserProfile } = useClerk();
 
   return (
     <SidebarMenu>
@@ -90,13 +91,16 @@ export function NavUser({ user }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openUserProfile()}>
                 <IconUserCircle />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <SettingsIcon />
-                Settings
+              <DropdownMenuItem asChild>
+                <Link to="/dashboard/settings">
+                
+                  <SettingsIcon />
+                  Settings
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
